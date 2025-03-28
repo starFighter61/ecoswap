@@ -12,19 +12,37 @@ dotenv.config();
 // Import routes
 const routes = require('./routes');
 
+// Parse allowed origins from environment variable
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:3000').split(',').map(origin => origin.trim());
+
 // Initialize Express app
 const app = express();
 const server = http.createServer(app);
+
 const io = socketIo(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true
   }
 });
 
 // Middleware
-app.use(cors());
+
+// Configure CORS with multiple origins
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 app.use(morgan('dev'));
 
