@@ -1,0 +1,31 @@
+# Settings for Netlify deployment
+
+[build]
+  # Directory to publish (relative to root of your repo)
+  publish = "build"
+  
+  # Default build command
+  command = "npm run build"
+
+# Redirects and rewrites
+[[redirects]]
+  # Redirect all API requests to the backend server
+  from = "/api/*"
+  to = "https://your-backend-api-url.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  # Handle client-side routing
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Environment variables
+[context.production.environment]
+  REACT_APP_API_URL = "https://your-backend-api-url.com/api"
+  REACT_APP_SOCKET_URL = "https://your-backend-api-url.com"
+
+[context.deploy-preview.environment]
+  REACT_APP_API_URL = "https://your-backend-api-url.com/api"
+  REACT_APP_SOCKET_URL = "https://your-backend-api-url.com"
