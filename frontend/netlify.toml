@@ -1,37 +1,16 @@
-Here's the complete netlify.toml file with all the updated URLs:
-
-```toml
 # Settings for Netlify deployment
 
 [build]
-  # Directory to publish (relative to root of your repo)
   publish = "build"
-  
-  # Default build command
   command = "npm run build"
 
-# Redirects and rewrites
 [[redirects]]
-  # Redirect all API requests to the backend server
   from = "/api/*"
   to = "https://ecoswap-backend-8xob.onrender.com/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
-  # Handle client-side routing
   from = "/*"
   to = "/index.html"
   status = 200
-
-# Environment variables
-[context.production.environment]
-  REACT_APP_API_URL = "https://ecoswap-backend-8xob.onrender.com/api"
-  REACT_APP_SOCKET_URL = "https://ecoswap-backend-8xob.onrender.com"
-
-[context.deploy-preview.environment]
-  REACT_APP_API_URL = "https://ecoswap-backend-8xob.onrender.com/api"
-  REACT_APP_SOCKET_URL = "https://ecoswap-backend-8xob.onrender.com"
-```
-
-You can copy this entire content and replace what's in your frontend/netlify.toml file.
